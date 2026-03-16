@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register - GR Info Tech</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Rajdhani', sans-serif;
+    color: #fff;
+    overflow-x: hidden;
+  }
+
+  .poster {
+    width: 620px;
+    min-height: auto;
+    background: linear-gradient(160deg, #020a1a 0%, #030d1f 40%, #010810 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid rgba(0, 180, 255, 0.2);
+    box-shadow: 0 0 50px rgba(0, 100, 255, 0.1);
+    margin: 20px;
+  }
+
+  /* Circuit board background */
+  .poster::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,180,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,180,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 0;
+  }
+
+  /* Glowing orbs */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: 0;
+    pointer-events: none;
+  }
+  .orb-1 { width: 300px; height: 300px; background: rgba(0,140,255,0.12); top: -80px; left: -80px; }
+  .orb-2 { width: 250px; height: 250px; background: rgba(0,200,255,0.08); bottom: -60px; right: -60px; }
+
+  /* Scan line */
+  .scanline {
+    position: absolute;
+    left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(0,200,255,0.3), transparent);
+    animation: scan 6s linear infinite;
+    z-index: 1;
+    pointer-events: none;
+  }
+  @keyframes scan { 0%{top:-2px;} 100%{top:100%;} }
+
+  /* Corners */
+  .corner {
+    position: absolute;
+    width: 28px; height: 28px;
+    border-color: rgba(0,180,255,0.7);
+    border-style: solid;
+    z-index: 2;
+  }
+  .corner-tl { top: 12px; left: 12px; border-width: 2px 0 0 2px; }
+  .corner-tr { top: 12px; right: 12px; border-width: 2px 2px 0 0; }
+  .corner-bl { bottom: 12px; left: 12px; border-width: 0 0 2px 2px; }
+  .corner-br { bottom: 12px; right: 12px; border-width: 0 2px 2px 0; }
+
+  /* Header */
+  .header {
+    z-index: 3;
+    position: relative;
+    text-align: center;
+    margin-bottom: 30px;
+    width: 100%;
+  }
+  .top-brand {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 20px;
+    display: block;
+  }
+  .top-brand span { color: #00c8ff; font-weight: 900; }
+  
+  h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #00c8ff 0%, #0af 40%, #fff 70%, #00c8ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .sub-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(0, 200, 255, 0.8);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* Form Styles */
+  .form-container {
+    width: 100%;
+    z-index: 3;
+    position: relative;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  label {
+    font-size: 14px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.8);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  input, select, textarea {
+    background: rgba(0, 20, 50, 0.6);
+    border: 1px solid rgba(0, 180, 255, 0.3);
+    padding: 12px 15px;
+    color: #fff;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    outline: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: #00c8ff;
+    box-shadow: 0 0 15px rgba(0, 200, 255, 0.3);
+    background: rgba(0, 40, 80, 0.7);
+  }
+  
+  /* Dropdown styling */
+  select option {
+    background: #020a1a;
+    color: #fff;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  button {
+    margin-top: 10px;
+    background: rgba(0, 180, 255, 0.15);
+    border: 1px solid #00c8ff;
+    color: #00c8ff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    font-weight: 900;
+    padding: 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 10px rgba(0, 200, 255, 0.5);
+    position: relative;
+    overflow: hidden;
+  }
+  button:hover {
+    background: #00c8ff;
+    color: #000;
+    box-shadow: 0 0 30px rgba(0, 200, 255, 0.6);
+    text-shadow: none;
+  }
+  button:active {
+    transform: scale(0.98);
+  }
+
+  /* Response Message */
+  #response-msg {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 1px;
+    display: none;
+    padding: 15px;
+    border-radius: 4px;
+    background: rgba(0, 200, 255, 0.1);
+    border: 1px solid rgba(0, 200, 255, 0.3);
+    color: #00c8ff;
+  }
+
+  /* Mobile Tweaks */
+  @media (max-width: 650px) {
+    .poster {
+      width: 95%;
+      padding: 30px 20px;
+    }
+    h1 { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="scanline"></div>
+  <div class="corner corner-tl"></div>
+  <div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div>
+  <div class="corner corner-br"></div>
+
+  <div class="header">
+    <div class="top-brand"><span>GR</span> &nbsp;Info Tech</div>
+    <h1>PROJECT REGISTRATION</h1>
+    <div class="sub-title">SECURE YOUR PLACEMENT</div>
+  </div>
+
+  <div class="form-container">
+    <form id="registerForm">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" placeholder="ENTER YOUR NAME" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="ENTER YOUR EMAIL" required>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" placeholder="+91 XXXXXXXXXX" required>
+      </div>
+
+      <div class="form-group">
+        <label for="stack">Preferred Tech Stack</label>
+        <select id="stack" name="stack" required>
+          <option value="" disabled selected>SELECT TECHNOLOGY</option>
+          <option value="mern">MERN STACK (React/Node)</option>
+          <option value="python">PYTHON / DJANGO / FLASK</option>
+          <option value="frontend">HTML5 / CSS3 / JS</option>
+          <option value="mobile">REACT NATIVE / FLUTTER</option>
+          <option value="database">MYSQL / MONGODB</option>
+          <option value="nextjs">NEXT.JS / TYPESCRIPT</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="message">Project Details</label>
+        <textarea id="message" name="message" placeholder="TELL US ABOUT YOUR PROJECT REQUIREMENTS..."></textarea>
+      </div>
+
+      <button type="submit">INITIALIZE REGISTRATION</button>
+    </form>
+    <div id="response-msg">REGISTRATION SEQUENCE COMPLETED. WE WILL CONTACT YOU SHORTLY.</div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('registerForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('button');
+    const msg = document.getElementById('response-msg');
+
+    btn.innerHTML = 'PROCESSING...';
+    btn.style.opacity = '0.7';
+    btn.disabled = true;
+
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData);
+
+    try {
+      const response = await fetch('http://localhost:5000/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        this.style.display = 'none';
+        msg.style.display = 'block';
+      } else {
+        throw new Error('Registration failed');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      btn.innerHTML = 'INITIALIZE REGISTRATION';
+      btn.style.opacity = '1';
+      btn.disabled = false;
+      msg.innerHTML = 'REGISTRATION FAILED. PLEASE TRY AGAIN.';
+      msg.style.display = 'block';
+      msg.style.color = '#ff4444';
+      msg.style.borderColor = '#ff4444';
+    }
+  });
+</script>
+</body>
+</html>
